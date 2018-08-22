@@ -1,0 +1,6 @@
+version: 1.0
+shards:
+  clang:
+    github: ysbaddaden/clang.cr
+    commit: ab542eef4d755080f04cdd4f7e2bbc70888e7fe8
+
