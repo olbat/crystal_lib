@@ -30,7 +30,7 @@ before_install: |
   case $TRAVIS_OS_NAME in
   linux)
     sudo apt-get -qq update
-    sudo apt-get install -y llvm-${LLVM_VERSION}-dev libclang-${LLVM_VERSION}-dev
+    sudo apt-get install -y llvm-${LLVM_VERSION}-dev libclang-${LLVM_VERSION}-dev clang-${LLVM_VERSION}
 
     # FIXME: several ugly fixes since the Travis CI image is shipped
     #        with a pre-configured version of LLVM:
@@ -42,6 +42,7 @@ before_install: |
     #          directory is present in $PATH with a better priority)
     sudo update-alternatives --install /usr/bin/llvm-config llvm-config $(llvm-config-${LLVM_VERSION} --bindir)/llvm-config 1
     export PATH=/usr/bin:$PATH
+    find /usr/lib/llvm-${LLVM_VERSION}/ -name stddef.h
     ;;
 
   osx)
@@ -57,5 +58,7 @@ before_install: |
   *)
     exit 1;;
   esac
+
+  export CC=clang-${LLVM_VERSION}
 
   set +x
