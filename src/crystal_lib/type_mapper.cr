@@ -8,7 +8,7 @@ class CrystalLib::TypeMapper
 
   @typedef_name : String?
 
-  def initialize(@prefix_matcher : PrefixMatcher? = nil)
+  def initialize(@matcher : Matcher? = nil)
     @pending_definitions = [] of Crystal::ASTNode
     @pending_structs = [] of PendingStruct
     @generated = {} of UInt64 => Crystal::ASTNode
@@ -256,7 +256,7 @@ class CrystalLib::TypeMapper
   end
 
   def crystal_type_name(name)
-    name = match_prefix(name)
+    name = match(name)
 
     underscore_index = nil
     name.each_char_with_index do |char, i|
@@ -290,12 +290,12 @@ class CrystalLib::TypeMapper
   end
 
   def crystal_field_name(name)
-    name = match_prefix(name).underscore
+    name = match(name).underscore
     name = "_end" if name == "end"
     name
   end
 
-  def match_prefix(name)
-    @prefix_matcher.try(&.match(name)) || name
+  def match(name)
+    @matcher.try(&.match(name)) || name
   end
 end
